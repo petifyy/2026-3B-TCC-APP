@@ -35,6 +35,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Linking
 } from "react-native";
 
 type ConfirmAction = "logout" | "delete-account" | "delete-pet" | null;
@@ -135,6 +136,10 @@ export default function Perfil() {
       carregarPets(true);
     }, [carregarUsuario, carregarPets]),
   );
+
+    const handleFaleConosco = () => {
+      Linking.openURL('mailto:petify.it@gmail.com');
+    };
 
   const handleSubmitPet = async (petData: PetFormData): Promise<boolean> => {
     if (!userId) {
@@ -444,11 +449,6 @@ export default function Perfil() {
                 onPress: () => handleEditPetInfo("peso"),
               },
               {
-                icon: "notifications-outline",
-                label: "Editar alertas do pet",
-                onPress: () => setAlertRuleModalVisible(true),
-              },
-              {
                 icon: "trash-outline",
                 label: "Excluir pet",
                 destructive: true,
@@ -489,7 +489,7 @@ export default function Perfil() {
             {
               icon: "options-outline",
               label: "Preferências",
-              onPress: () => {},
+              onPress: () => router.push("/(profile)/preferences"),
             },
             {
               icon: "document-text-outline",
@@ -505,7 +505,7 @@ export default function Perfil() {
             {
               icon: "chatbubble-ellipses-outline",
               label: "Fale conosco",
-              onPress: () => {},
+              onPress: handleFaleConosco,
             },
             {
               icon: "information-circle-outline",
