@@ -487,14 +487,11 @@ export default function Perfil() {
               },
             },
             {
-              icon: "options-outline",
-              label: "Preferências",
-              onPress: () => router.push("/(profile)/preferences"),
-            },
-            {
               icon: "document-text-outline",
               label: "Termos de uso",
-              onPress: () => {},
+              onPress: () => {
+                router.push("/(profile)/termsOfUse");
+              },
             },
           ]}
         />
