@@ -1,19 +1,30 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { useState } from "react";
+import {
+    Linking,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const AZUL_ESCURO = "#0B3D75";
 const AZUL_BOTAO = "#2E8BE6";
 const CINZA = "#555555";
 const TEXTO = "#1A1A1A";
+
+const handleFaleConosco = () => {
+  Linking.openURL("mailto:petify.it@gmail.com");
+};
+
+const handlePoliticaPrivacidade = () => {
+  Linking.openURL(
+    "https://centropaulasouza.sharepoint.com/:b:/r/sites/InternetProtocoloseSeg.deSist.daInformacao-3B.GA.I-MTecPIDes/SiteAssets/Published/4bc56a41-20ce-40c4-86ca-d848129ae9bc/Politica%20de%20Seguran%C3%A7a%20-%20Petify%20(Published).pdf?d=wa10d20c1c8904d44a0ab649f5ecc577e&csf=1&web=1&e=tfqWJm&nav=cHVibGlzaFZpZXc%3D"
+  );
+};
 
 type Subsecao = {
   subtitulo: string;
@@ -166,21 +177,51 @@ export default function TermosDeUso() {
           <View key={secao.titulo} style={styles.secao}>
             <Text style={styles.tituloSecao}>{secao.titulo}</Text>
 
-            {secao.paragrafos?.map((p, i) => (
-              <Text key={i} style={styles.paragrafo}>
-                {p}
+            {secao.titulo === "10. Contato" ? (
+              <Text style={styles.paragrafo}>
+                Se você tiver dúvidas sobre estes Termos de Uso, entre em
+                contato com a Petify em{" "}
+                <Text
+                  style={styles.link}
+                  onPress={handleFaleConosco}
+                  accessibilityRole="link"
+                >
+                  petify.it@gmail.com
+                </Text>
+                .
               </Text>
-            ))}
+            ) : (
+              secao.paragrafos?.map((p, i) => (
+                <Text key={i} style={styles.paragrafo}>
+                  {p}
+                </Text>
+              ))
+            )}
 
             {secao.subsecoes?.map((sub) => (
               <View key={sub.subtitulo} style={styles.subsecao}>
                 <Text style={styles.subtitulo}>{sub.subtitulo}</Text>
 
-                {sub.paragrafos.map((p, i) => (
-                  <Text key={i} style={styles.paragrafo}>
-                    {p}
+                {sub.subtitulo === "5.2 Política de privacidade" ? (
+                  <Text style={styles.paragrafo}>
+                    O uso do software está sujeito à Política de Privacidade da
+                    Petify, que pode ser acessada na{" "}
+                    <Text
+                      style={styles.link}
+                      onPress={handlePoliticaPrivacidade}
+                      accessibilityRole="link"
+                    >
+                      Política de Segurança do Petify
+                    </Text>
+                    .
                   </Text>
-                ))}
+                ) : (
+                  sub.paragrafos.map((p, i) => (
+                    <Text key={i} style={styles.paragrafo}>
+                      {p}
+                    </Text>
+                  ))
+                )}
 
                 {sub.lista?.map((item, i) => (
                   <View key={i} style={styles.itemLista}>
@@ -302,6 +343,10 @@ const styles = StyleSheet.create({
   },
   textoItem: {
     flex: 1,
+  },
+  link: {
+    color: AZUL_BOTAO,
+    textDecorationLine: "underline",
   },
   rodape: {
     paddingHorizontal: 20,

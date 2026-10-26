@@ -18,10 +18,10 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+ 
 const AZUL = "#3498db";
 const CINZA = "#8E8E93";
-
+ 
 const MENSAGENS: Record<string, string> = {
   PRONTA: "Coleira encontrada.",
   CONECTANDO: "Conectando a coleira ao Wi-Fi...",
@@ -34,7 +34,7 @@ const MENSAGENS: Record<string, string> = {
   ERRO_WIFI:
     "Não foi possível conectar ao Wi-Fi. Confira o nome, a senha e se a rede é de 2,4 GHz.",
 };
-
+ 
 export default function ConfigurarWifi() {
   const [serial, setSerial] = useState("");
   const [ssid, setSsid] = useState("");
@@ -42,9 +42,9 @@ export default function ConfigurarWifi() {
   const [mensagem, setMensagem] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [sucesso, setSucesso] = useState(false);
-
+ 
   const { idUsuario } = useLocalSearchParams();
-
+ 
   async function enviar() {
     if (!serial.trim() || !ssid.trim()) {
       Alert.alert(
@@ -53,19 +53,19 @@ export default function ConfigurarWifi() {
       );
       return;
     }
-
+ 
     if (carregando || sucesso) return;
-
+ 
     setCarregando(true);
     setMensagem("Procurando a coleira...");
-
+ 
     try {
       const permissao = await pedirPermissoes();
-
+ 
       if (!permissao) {
         throw new Error("Permissão de Bluetooth negada.");
       }
-
+ 
       const resultado = await configurarWifiDaColeira(
         serial.trim().toUpperCase(),
         ssid.trim(),
@@ -74,16 +74,16 @@ export default function ConfigurarWifi() {
           setMensagem(MENSAGENS[status] ?? status);
         },
       );
-
+ 
       const status = resultado.status;
       const idProduto = resultado.idProduto;
-
+ 
       setMensagem(MENSAGENS[status] ?? status);
-
+ 
       if (status !== "RECONHECIDA") {
         return;
       }
-
+ 
       if (
         idProduto === null ||
         idProduto === undefined ||
@@ -94,9 +94,9 @@ export default function ConfigurarWifi() {
           "A coleira foi reconhecida, mas não foi possível obter um ID válido pelo Bluetooth. Tente novamente.",
         );
       }
-
+ 
       setSucesso(true);
-
+ 
       router.replace({
         pathname: "/(auth)/collar-and-pet-setup",
         params: {
@@ -110,14 +110,14 @@ export default function ConfigurarWifi() {
         erro instanceof Error
           ? erro.message
           : "Falha ao se comunicar com a coleira.";
-
+ 
       setMensagem(texto);
       Alert.alert("Não foi possível conectar", texto);
     } finally {
       setCarregando(false);
     }
   }
-
+ 
   return (
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
@@ -136,23 +136,22 @@ export default function ConfigurarWifi() {
             <View style={styles.heroIcon}>
               <Ionicons name="wifi-outline" size={38} color={AZUL} />
             </View>
-
+ 
             <Text style={styles.title}>Conecte sua coleira</Text>
-
+ 
             <Text style={styles.subtitle}>
               Conecte o dispositivo à sua rede Wi-Fi para continuar a
               configuração.
             </Text>
           </View>
-
+ 
           <View>
             <Text style={styles.sectionTitle}>Dados da coleira</Text>
-
+ 
             <Text style={styles.label}>Número de série</Text>
-
+ 
             <View style={styles.inputContainer}>
-              <Ionicons name="barcode-outline" size={20} color={CINZA} />
-
+ 
               <TextInput
                 placeholder="Ex.: PTF2BKGZMRC1"
                 placeholderTextColor="#AEAEB2"
@@ -165,20 +164,17 @@ export default function ConfigurarWifi() {
                 style={styles.input}
               />
             </View>
-
+ 
             <Text style={styles.helperText}>
               Você encontra esse código na caixa do dispositivo.
             </Text>
-
+ 
             <Text style={[styles.sectionTitle, styles.wifiTitle]}>
               Rede Wi-Fi
             </Text>
-
-            <Text style={styles.label}>Nome da rede</Text>
-
+ 
             <View style={styles.inputContainer}>
-              <Ionicons name="wifi-outline" size={20} color={CINZA} />
-
+ 
               <TextInput
                 placeholder="Nome da rede Wi-Fi"
                 placeholderTextColor="#AEAEB2"
@@ -191,12 +187,9 @@ export default function ConfigurarWifi() {
                 style={styles.input}
               />
             </View>
-
-            <Text style={styles.label}>Senha da rede</Text>
-
+ 
             <View style={styles.inputContainer}>
-              <Ionicons name="lock-closed-outline" size={20} color={CINZA} />
-
+ 
               <TextInput
                 placeholder="Senha do Wi-Fi"
                 placeholderTextColor="#AEAEB2"
@@ -215,20 +208,20 @@ export default function ConfigurarWifi() {
                 style={styles.input}
               />
             </View>
-
+ 
             <View style={styles.infoBox}>
               <Ionicons
                 name="information-circle-outline"
                 size={20}
                 color={AZUL}
               />
-
+ 
               <Text style={styles.infoText}>
                 A rede deve ser de 2,4 GHz. Confira o nome e a senha antes de
                 continuar.
               </Text>
             </View>
-
+ 
             {mensagem ? (
               <View style={[styles.statusBox, sucesso && styles.successBox]}>
                 {carregando ? (
@@ -244,7 +237,7 @@ export default function ConfigurarWifi() {
                     color={sucesso ? "#248A3D" : AZUL}
                   />
                 )}
-
+ 
                 <Text
                   style={[styles.statusText, sucesso && styles.successText]}
                 >
@@ -252,7 +245,7 @@ export default function ConfigurarWifi() {
                 </Text>
               </View>
             ) : null}
-
+ 
             <TouchableOpacity
               style={[
                 styles.primaryButton,
@@ -281,7 +274,7 @@ export default function ConfigurarWifi() {
                 </>
               )}
             </TouchableOpacity>
-
+ 
             {!sucesso && (
               <TouchableOpacity
                 style={styles.secondaryButton}
@@ -298,7 +291,7 @@ export default function ConfigurarWifi() {
     </SafeAreaView>
   );
 }
-
+ 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,

@@ -2,6 +2,7 @@ import { AddPetModal } from "@/components/AddPetModal";
 import { AlertRuleModal } from "@/components/AlertRuleModal";
 import { ChangePasswordModal } from "@/components/ChangePasswordModal";
 import { ConfirmModal } from "@/components/ConfirmModal";
+import { AlertPreferencesModal } from "@/components/AlertPreferencesModal";
 import {
   EditableField,
   EditPetFieldModal,
@@ -54,6 +55,8 @@ export default function Perfil() {
   const [pets, setPets] = useState<Pet[]>([]);
   const [selectedPet, setSelectedPet] = useState<Pet | null>(null);
   const [usuario, setUsuario] = useState<Usuario | null>(null);
+
+  const [preferencesVisible, setPreferencesVisible] = useState(false);
 
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -487,6 +490,11 @@ export default function Perfil() {
               },
             },
             {
+              icon: "notifications",
+              label: "Gerenciar alertas",
+              onPress: () => setPreferencesVisible(true),
+            },
+            {
               icon: "document-text-outline",
               label: "Termos de uso",
               onPress: () => {
@@ -575,6 +583,11 @@ export default function Perfil() {
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         onSubmit={handleSubmitPet}
+      />
+
+      <AlertPreferencesModal
+        visible={preferencesVisible}
+        onClose={() => setPreferencesVisible(false)}
       />
     </>
   );
