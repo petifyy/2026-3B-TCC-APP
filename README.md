@@ -48,8 +48,8 @@ O Petify é destinado a tutores de cães e gatos que desejam acompanhar informa�
 Clone o repositório e instale as dependências:
 
 ```bash
-git clone https://github.com/seu-usuario/petify-app.git
-cd petify-app
+git clone https://github.com/petifyy/2026-3B-TCC-APP.git
+cd 2026-3B-TCC-APP
 npm install
 ```
 
